@@ -20,14 +20,14 @@ buildah run $container -- bash -c "echo 'PATH=$PATH:/opt/arm-toolchain/bin/;expo
 buildah run $container -- python3 -m pip --no-input install mbed-cli
 buildah run $container -- mbed config -G GCC_ARM_PATH "/opt/arm-toolchain/bin"
 buildah run $container -- python3 -m pip --no-input install jsonschema mbed_cloud_sdk \
-	mbed_ls mbed_host_tests mbed_greentea manifest_tool, icetea, pycryptodome
+	mbed_ls mbed_host_tests mbed_greentea manifest_tool icetea pycryptodome
 
 buildah run $container -- python3 -m pip --no-input install west
 buildah run $container -- west init /opt/zephyrproject
-buildah run $container -- bash -c "cd /opt/zephyrproject && west update && west update"
+buildah run $container -- bash -c "cd /opt/zephyrproject && west update && west zephyr-export"
 buildah run $container -- pip3 install -r /opt/zephyrproject/zephyr/scripts/requirements.txt
 
-buildah run $container -- curl "https://gist.githubusercontent.com/ld-cd/16e2a0669d5c20b430753cfca5432a6a/raw/014725c195497ec1290ac4a4cabe58c51fe1d56b/.zypherrc" -o /root/.zephyrrc
+buildah run $container -- bash -c "curl 'https://gist.githubusercontent.com/ld-cd/16e2a0669d5c20b430753cfca5432a6a/raw/1fc6296f5d2816d994446a536ff64edfbf4bd656/.zypherrc' >> /etc/profile'"
 
 echo
 echo "Commiting to star-toolchain:"
