@@ -1,9 +1,9 @@
 ARM_TOOLCHAIN="https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2"
 
-container=$(buildah from scratch)
+container=$(buildah from fedora)
 mount=$(buildah mount $container)
 
-dnf install --installroot $mount --releasever 32 \
+buildah run $container -- dnf install \
 	bash coreutils python3 python3-pip git mercurial rust \
 	bash-completion cmake ninja-build gperf ccache dfu-util \
 	dtc tar wget curl python3-devel python3-setuptools python3-wheel \
