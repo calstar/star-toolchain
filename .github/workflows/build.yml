@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Build Container
 
 # Controls when the action will run. 
 on:
@@ -30,3 +30,11 @@ jobs:
         run: |
           $GITHUB_WORKSPACE/build.sh
           podman images
+      - name: Push the images
+        env:
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+        run: |
+          podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD quay.io
+          podman push localhost/star-toolchain-nozephyr quay.io/$QUAY_USERNAME/star-toolchain-nozephyr
+          podman push localhost/star-toolchain quay.io/$QUAY_USERNAME/star-toolchain

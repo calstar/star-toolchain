@@ -5,9 +5,9 @@ mount=$(buildah mount $container)
 
 buildah run $container -- dnf install \
 	bash coreutils python3 python3-pip git mercurial rust \
-	bash-completion cmake ninja-build gperf ccache dfu-util \
-	dtc tar wget curl python3-devel python3-setuptools python3-wheel \
-	xz bzip2 file python3-tkinter make automake gcc gcc-c++ SDL2-devel \
+	bash-completion cmake gperf dfu-util dtc tar wget curl \
+	python3-devel python3-setuptools python3-wheel \
+	xz bzip2 file make automake gcc gcc-c++ \
 	python3-intelhex cgdb ncurses \
 	--setopt install_weak_deps=false -y
 
@@ -17,10 +17,18 @@ buildah run $container -- bash -c "cd /opt && tar jxf toolchain.tar.bz2 && rm to
 
 buildah run $container -- bash -c "echo 'PATH=$PATH:/opt/arm-toolchain/bin/;export PATH' >> /etc/profile"
 
+buildah run $container -- bash -c "cp /etc/skel/.bashrc /root/ && chmod 755 /root/.bashrc"
+
 buildah run $container -- python3 -m pip --no-input install mbed-cli
 buildah run $container -- mbed config -G GCC_ARM_PATH "/opt/arm-toolchain/bin"
 buildah run $container -- python3 -m pip --no-input install jsonschema mbed_cloud_sdk \
 	mbed_ls mbed_host_tests mbed_greentea manifest_tool icetea pycryptodome
+
+buildah commit $container star-toolchain-nozephyr
+
+buildah run $container -- dnf install \
+	ccache dtc SDL2-devel python3-tkinter ninja-build \
+	--setopt install_weak_deps=false -y
 
 buildah run $container -- python3 -m pip --no-input install west
 buildah run $container -- west init /opt/zephyrproject
