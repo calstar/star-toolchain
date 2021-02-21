@@ -36,5 +36,5 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
         run: |
           podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD quay.io
-          podman push localhost/star-toolchain-nozephyr quay.io/$QUAY_USERNAME/star-toolchain-nozephyr
           podman push localhost/star-toolchain quay.io/$QUAY_USERNAME/star-toolchain
+          #podman push localhost/star-toolchain-nozephyr quay.io/$QUAY_USERNAME/star-toolchain-nozephyr
