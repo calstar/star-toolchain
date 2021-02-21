@@ -16,7 +16,7 @@ To download an image from quay, decide what image you want (`star-toolchain` or 
 docker/podman pull quay.io/star_admin/star-toolchain[-nozephyr]
 docker/podman volume create star-workspace # create a persistent directory to share with the container
 docker/podman volume inspect star-workspace # See the mountpoint to access your workspace from the host.
-docker/podman container create -d -it -w=/root/star-workspace --name star-toolbox -v star-workspace:/root/star-workspace star-toolchain[-nozephyr] bash
+docker/podman container create -it -w=/root/star-workspace --name star-toolbox -v star-workspace:/root/star-workspace star-toolchain[-nozephyr] bash
 ```
 
 ## Opening With VS Code
