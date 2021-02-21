@@ -23,8 +23,8 @@ buildah run $container -- bash -c "cd /opt && tar jxf toolchain.tar.bz2 && rm to
 echo
 echo "CONFIGURING environment:"
 buildah run $container -- bash -c "echo 'PATH=$PATH:/opt/arm-toolchain/bin/;export PATH' >> /etc/profile"
-
 buildah run $container -- bash -c "cp /etc/skel/.bashrc /root/ && chmod 755 /root/.bashrc"
+buildah run $container -- bash -c "echo 'source /etc/profile' >> /root/.bashrc"
 
 echo
 echo "INSTALLING MBED:"
