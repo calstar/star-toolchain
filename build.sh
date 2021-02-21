@@ -1,7 +1,6 @@
 ARM_TOOLCHAIN="https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2"
 
 container=$(buildah from fedora)
-mount=$(buildah mount $container)
 
 echo "LOGGING into quay.io as $QUAY_USERNAME"
 podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD quay.io
@@ -38,9 +37,10 @@ buildah run $container -- python3 -m pip --no-input install jsonschema mbed_clou
 echo
 echo "BUILT star-toolchain-nozephyr"
 echo "COMMITING to star-toolchain-nozephyr:"
+buildah commit $container star-toolchain-nozephyr
 df -h
-#buildah commit $container star-toolchain-nozephyr
-df -h
+podman push localhost/star-toolchain-nozephyr quay.io/$QUAY_USERNAME/star-toolchain-nozephyr
+podman rmi localhost/star-toolchain-nozephyr
 
 buildah run $container -- dnf install \
 	ccache dtc SDL2-devel python3-tkinter ninja-build \
@@ -55,7 +55,6 @@ buildah run $container -- bash -c "curl 'https://gist.githubusercontent.com/ld-c
 
 echo
 echo "COMMITING to star-toolchain:"
-df -h
 buildah commit $container star-toolchain
 df -h
 podman push localhost/star-toolchain quay.io/$QUAY_USERNAME/star-toolchain
