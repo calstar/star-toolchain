@@ -30,6 +30,8 @@ echo
 echo "INSTALLING MBED:"
 buildah run $container -- python3 -m pip --no-input install mbed-cli
 buildah run $container -- mbed config -G GCC_ARM_PATH "/opt/arm-toolchain/bin"
+buildah run $container -- python3 -m pip --no-input install -r \
+	"https://raw.githubusercontent.com/ARMmbed/mbed-os/master/requirements.txt"
 buildah run $container -- python3 -m pip --no-input install jsonschema mbed_cloud_sdk \
 	mbed_ls mbed_host_tests mbed_greentea manifest_tool icetea pycryptodome
 
