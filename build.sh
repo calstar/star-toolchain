@@ -3,6 +3,9 @@ ARM_TOOLCHAIN="https://armkeil.blob.core.windows.net/developer/Files/downloads/g
 container=$(buildah from fedora)
 mount=$(buildah mount $container)
 
+echo "LOGGING into quay.io as $QUAY_USERNAME"
+podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD quay.io
+
 echo
 echo "INSTALLING base packages:"
 buildah run $container -- dnf install \
@@ -55,3 +58,4 @@ echo "COMMITING to star-toolchain:"
 df -h
 buildah commit $container star-toolchain
 df -h
+podman push localhost/star-toolchain quay.io/$QUAY_USERNAME/star-toolchain
