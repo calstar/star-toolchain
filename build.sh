@@ -12,7 +12,7 @@ buildah run $container -- dnf install \
 	bash-completion cmake gperf dfu-util dtc tar wget curl \
 	python3-devel python3-setuptools python3-wheel \
 	xz bzip2 file make automake gcc gcc-c++ \
-	python3-intelhex cgdb ncurses \
+	python3-intelhex cgdb ncurses ncurses-compat-libs \
 	--setopt install_weak_deps=false -y
 
 echo
